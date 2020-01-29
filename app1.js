@@ -11,8 +11,6 @@ loadEventListeners();
 
 //Create function
 function loadEventListeners(){
- //Dom Load event
- document.addEventListener('DOMContentLoaded', getTasks);
  //Add task event/form
  form.addEventListener('submit', addTask);
  //Remove task event
@@ -23,37 +21,6 @@ function loadEventListeners(){
 filter.addEventListener('keyup', filterTasks);
 
 };
-//GET Tasks from Ls
-function getTasks(){
-   let tasks;
-   if(localStorage.getItem('tasks') === null){
-     tasks = [];
-   }else {
-      tasks = JSON.parse(localStorage.getItem('tasks'));
-   }
-
-   tasks.forEach(function(task){
-      //Create li element
-      const li = document.createElement('li');
-      //Add Class
-      li.className = "collection-item"
-      //Create text node and append to li
-      li.appendChild(document.createTextNode(task));  
-      //Create new link  element
-      const link =document.createElement('a');
-      //Add Class
-      link.className = "delete-item secondary-content";
-      //Add icon html
-      link.innerHTML = '<i class="fa fa-remove"></i>';
-      //Append the link to li
-      li.appendChild(link);
-
-      //APPEND LI TO UL
-
-      taskList.appendChild(li);
-
-   });
-}
 //Add task function
 
 function addTask(e){ 
@@ -80,54 +47,18 @@ li.appendChild(link);
 
 taskList.appendChild(li);
 
-//Store in local storage
-storeTaskInLocalStorage(taskInput.value);
-
 // clear input
 taskInput.value = '';
  e.preventDefault();
-}
-//Store Task
-function storeTaskInLocalStorage(task){
-   let tasks;
-   if(localStorage.getItem('tasks') === null){
-     tasks = [];
-   }else {
-      tasks = JSON.parse(localStorage.getItem('tasks'));
-   }
-   tasks.push(task);
-
-   localStorage.setItem('tasks',JSON.stringify(tasks));
 }
 //Remove single Task
 function removeTask(e){
  if(e.target.parentElement.classList.contains('delete-item')){ 
     if(confirm('Are you sure?')){
   e.target.parentElement.parentElement.remove();
-     
-   //Remove from LocalStorage
-   removeTaskFromLocalStorage(e.target.parentElement.parentElement);
-
-   }
+}
    e.preventDefault();
  }
-}
-//REmove from ls function
-function removeTaskFromLocalStorage(taskItem){
-   let tasks;
-   if(localStorage.getItem('tasks') === null){
-     tasks = [];
-   }else {
-      tasks = JSON.parse(localStorage.getItem('tasks'));
-   }
-
-    tasks.forEach(function(task, index){
-      if(taskItem.textContent === task){
-         tasks.splice(index, 1);
-      }
-    });
-
-    localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 //Clear All Tasks
 function clearTasks(e){
@@ -136,14 +67,9 @@ function clearTasks(e){
    while(taskList.firstChild){
       taskList.removeChild(taskList.firstChild);
    }
-   // clear from LS
-   clearTasksFromLocalStorage();
+
    e.preventDefault
 };
-//clear Tasks from Ls
-function clearTasksFromLocalStorage(){
-   localStorage.clear();
-}
 //Function Filter tasks
  
 function filterTasks(e){
